@@ -6,14 +6,14 @@
 
 const float PI = 3.14159265358979323846;
 
-Shape::Shape(std::string name, Vector3D &scopePosition, Vector3D &size, Type type) {
+Shape::Shape(std::string name, Vector3D scopePosition, Vector3D size, Type type) {
     this->name = name;
     this->scopePosition = scopePosition;
     this->size = size;
     this->type = type;
 }
 
-Shape &Shape::translate(Vector3D &translation) {
+Shape &Shape::translate(Vector3D translation) {
     this->scopePosition.add(translation);
     return *this;
 }
@@ -26,7 +26,7 @@ Type Shape::getType() {return this->type; }
 
 void Shape::setType(Type type) {this->type = type; }
 
-Vector3D Shape::rotate_around_axis(Vector3D &size, float degrees, int axis) {
+Vector3D Shape::rotate_around_axis(Vector3D size, float degrees, int axis) {
     float angle = PI * degrees / 180.0;
     float cos_angle = cos(angle);
     float sin_angle = sin(angle);
@@ -60,7 +60,7 @@ Vector3D Shape::rotate_around_axis(Vector3D &size, float degrees, int axis) {
 
 }
 
-Shape &Shape::rotate(Vector3D &angles) {
+Shape &Shape::rotate(Vector3D angles) {
     Vector3D rotatedX = rotate_around_axis(this->size, angles.getX(), 0);
     Vector3D rotatedY = rotate_around_axis(rotatedX, angles.getY(), 1);
     Vector3D rotatedZ = rotate_around_axis(rotatedY, angles.getZ(), 2);
@@ -68,7 +68,7 @@ Shape &Shape::rotate(Vector3D &angles) {
     return *this;
 }
 
-Shape &Shape::setSize(Vector3D &newSize) {
+Shape &Shape::setSize(Vector3D newSize) {
 	if (newSize.getX() > -1000)
 		this->size.setElement(0, newSize.getX());
 	if (newSize.getY() > -1000)

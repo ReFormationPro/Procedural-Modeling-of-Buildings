@@ -1,5 +1,15 @@
 #pragma once
-#include <GL/glut.h>
+
+#ifdef TRYIT
+extern "C" 
+{
+#endif
+	#include <GL/glew.h>
+	#include <GL/glut.h>
+#ifdef TRYIT
+}
+#endif
+
 #include <iostream>
 #include <map>
 #include<vector>

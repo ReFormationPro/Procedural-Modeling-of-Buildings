@@ -14,20 +14,20 @@ class Shape {
     Type type; //scope/non-scope
     friend std::ostream &operator<<(std::ostream &strm, const Shape &shape);
 
-    Vector3D rotate_around_axis(Vector3D &position, float degrees, int axe);
+    Vector3D rotate_around_axis(Vector3D position, float degrees, int axe);
 
 public:
     Shape() = default;
-    Shape(std::string name, Vector3D &scopePosition, Vector3D &size, Type type);
+    Shape(std::string name, Vector3D scopePosition, Vector3D size, Type type);
 
     /* Adds translation vector to the scope position*/
-    Shape &translate(Vector3D &translation);
+    Shape &translate(Vector3D translation);
 
     /* Rotates the respective axis of the coordinate system */
-    Shape &rotate(Vector3D &angles);
+    Shape &rotate(Vector3D angles);
 
     /* Sets the size of the scope */
-    Shape &setSize(Vector3D &newSize);
+    Shape &setSize(Vector3D newSize);
 
     void setType(Type type);
 
@@ -51,12 +51,12 @@ public:
 	*/
     std::vector<Shape> repeat(int axis, int times, std::string newShapesName);
 
-	std::vector<Shape> Shape::realRepeat(int axis, int times, std::string newShapesName);
+	std::vector<Shape> realRepeat(int axis, int times, std::string newShapesName);
 
     /* Splits the shape into shapes of lesser dimensions :
     a -> Comp(type, param) { A | B | ... | Z }
     Where type identifies the type of the component split with associated parameters param(if any).*/
-	std::vector<Shape> Shape::componentSplit(std::string type, std::vector<std::string> newShapeNames);
+	std::vector<Shape> componentSplit(std::string type, std::vector<std::string> newShapeNames);
 };
 
 /* Analog to Java.lang.Object.toString() */

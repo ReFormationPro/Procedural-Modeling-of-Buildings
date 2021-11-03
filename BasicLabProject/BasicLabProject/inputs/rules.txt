@@ -1,4 +1,4 @@
-main =>S (40,100,80) Subdiv(1,18,2,96,4){ground,divide,floors,top}
+main => S(40,100,80) Subdiv(1,18,2,96,4){ground,divide,floors,top}
 # ground floor
 ground => Comp(sides){g_front,g_front,g_side,g_side}
 g_front => Repeat(2,2){g_front_part,g_front_part}

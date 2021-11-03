@@ -10,12 +10,11 @@ Textures::Textures() {
 GLuint Textures::loadTexture(const char * filename, int width, int height){
 	GLuint texture;
 	unsigned char * data;
-	FILE * file; errno_t err;
-	if ((err = fopen_s(&file, filename, "r")) != 0) {
+	FILE * file;
+	if ((file = fopen(filename, "r")) == 0) {
 		throw "Couldn't load image";
 	}
-	if (file == NULL) return 0;
-	data = (unsigned char *)malloc(width * height * 3);
+	data = (unsigned char *) malloc(width * height * 3);
 	//int size = fseek(file,);
 	fread(data, width * height * 3, 1, file);
 	fclose(file);

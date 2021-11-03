@@ -22,7 +22,7 @@ float navigationRotation[3] = { 53.0, 120.0, 0.0 };
 // parameters for the framecounter
 char pixelstring[30];
 int cframe = 0;
-int time = 0;
+int gTime = 0;
 int timebase = 0;
 
 // position of the mouse when pressed
@@ -101,8 +101,10 @@ void displayFunc(void) {
 
 		int queueSize = shapeQueue.size();
 		float areaWidth =  2.0 / queueSize;
-		float blockWidth = std::fmin(0.4,areaWidth -  padding);
-
+		float blockWidth = areaWidth -  padding;
+		if (blockWidth > 0.4)
+			blockWidth = 0.4;
+		
 		for (int j = 0; j < queueSize; j++) {
 			Node *current = shapeQueue[j]; 
 			glColor3f(1.0f, 1.0f, 0.0f); // Yellow
@@ -296,18 +298,18 @@ void keyboardFunc(unsigned char key, int x, int y) {
 
 	case 'k':
 		printf("Camera position: %2.2f %2.2f %2.2f \n", viewerPosition[0], viewerPosition[1], viewerPosition[2]);
-		printf("Camera rotation: %2.2f %2.2f %2.2f \n", navigationRotation[0], navigationRotation[1]);
+		printf("Camera rotation: %2.2f %2.2f \n", navigationRotation[0], navigationRotation[1]);
 		break;
 	}
 }
 
 void countFrames(void) {
 
-	time = glutGet(GLUT_ELAPSED_TIME);
+	gTime = glutGet(GLUT_ELAPSED_TIME);
 	cframe++;
-	if (time - timebase > 50) {
-		sprintf_s(pixelstring, "fps: %4.2f", cframe*1000.0 / (time - timebase));
-		timebase = time;
+	if (gTime - timebase > 50) {
+		sprintf(pixelstring, "fps: %4.2f", cframe*1000.0 / (gTime - timebase));
+		timebase = gTime;
 		cframe = 0;
 		// Draw status text and uni-logo:
 	}
@@ -338,7 +340,7 @@ void renderBitmapString(float x, float y, float z, void *font, const char *strin
 	}
 }
 
-void drawBlock(Vector3D& basePoint, Vector3D& size) {
+void drawBlock(Vector3D basePoint, Vector3D size) {
 	glBegin(GL_QUADS);
 
 	float timesX = size.getX() / 10;
@@ -418,7 +420,7 @@ void drawBlock(Vector3D& basePoint, Vector3D& size) {
 	glEnd();
 }
 
-void drawCylinder(Vector3D & basePoint, Vector3D & size){
+void drawCylinder(Vector3D basePoint, Vector3D size){
 	glPushMatrix();
 	GLUquadricObj *quadratic;
 	quadratic = gluNewQuadric();
@@ -435,7 +437,7 @@ void drawCylinder(Vector3D & basePoint, Vector3D & size){
 	glPopMatrix();
 }
 
-void drawPlain(Vector3D& position, Vector3D& size) {
+void drawPlain(Vector3D position, Vector3D size) {
 	float timesX = size.getX() / 10;
 	float timesY = size.getY() / 10;
 	float timesZ = size.getZ() / 10;

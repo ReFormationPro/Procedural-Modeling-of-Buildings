@@ -1,5 +1,15 @@
-#pragma once
-#include <GL/glut.h>
+//#pragma once
+
+#ifdef TRYIT
+extern "C" 
+{
+#endif
+	#include <GL/glew.h>
+	#include <GL/glut.h>
+#ifdef TRYIT
+}
+#endif
+
 #include "Textures.h"
 #include "Vector3D.h"
 #include "Shape.h"
@@ -21,9 +31,9 @@ void countFrames(void);
 void renderBitmapString(float x, float y, float z, void *font, const char *string);
 
 //Drawing 3d objects
-void drawBlock(Vector3D& basePoint, Vector3D& size);//draw cuboid
-void drawCylinder(Vector3D& basePoint, Vector3D& size);
-void drawPlain(Vector3D& position, Vector3D& size);
+void drawBlock(Vector3D basePoint, Vector3D size);//draw cuboid
+void drawCylinder(Vector3D basePoint, Vector3D size);
+void drawPlain(Vector3D position, Vector3D size);
 
 //Drawing 2D objects
 void draw2DBlock(float centerX, float centerY, float width, float height);

@@ -164,7 +164,9 @@ std::function<std::vector<Shape>(Shape)> Parser::stringToRule(std::string string
 				std::copy(newShapes.begin(), newShapes.end(), std::back_inserter((*result))); //save new shape to result
 			};
 		}
-		else throw "Parser: no such command";
+		else {
+			throw "Parser: no such command";
+		}
 	}
 
 	return [=](Shape shape){
@@ -181,7 +183,7 @@ std::vector<std::function<float()>> Parser::parseArguments(std::string token){
 		if (startsWith(args[k],"rnd")) {
 			auto rArgs = splitString(splitString(args[k], '<', '>')[1], '-', '-');
 			std::uniform_real_distribution<double> dist(std::stof(rArgs[0]), std::stof(rArgs[1]));
-			funs.push_back([=] { return dist(mt); });
+			funs.push_back([&] { return dist(mt); });
 		}
 		else if (startsWith(args[k], "r")) {
 			int axis = funs[0]();
