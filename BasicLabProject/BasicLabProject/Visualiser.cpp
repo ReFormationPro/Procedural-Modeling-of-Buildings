@@ -16,6 +16,9 @@ float viewerPosition[3] = { -36.88, -28.0, -400.0 };
 float viewerDirection[3] = { 50.0, 0.0, 50.0 };
 float viewerUp[3] = { 0.0, 1.0, 0.0 };
 
+// Panning speed
+float SPEED = 0.25;
+
 // rotation values for the navigation
 float navigationRotation[3] = { 53.0, 120.0, 0.0 };
 
@@ -87,9 +90,9 @@ void displayFunc(void) {
 
 	glPushMatrix();
 	
-	//glTranslatef(viewerPosition[0], viewerPosition[1], viewerPosition[2]);
-	glRotatef(navigationRotation[0], 1.0f, 0.0f, 0.0f);
-	glRotatef(navigationRotation[1], 0.0f, 1.0f, 0.0f);
+	glTranslatef(viewerPosition[0], viewerPosition[1], viewerPosition[2]);
+	//glRotatef(navigationRotation[0], 1.0f, 0.0f, 0.0f);
+	//glRotatef(navigationRotation[1], 0.0f, 1.0f, 0.0f);
 
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
@@ -171,6 +174,10 @@ void initGlut(int whatToDraw, int argc, char **argv) {
  
 	if (whatToDraw ==0) {
 		// draw 2d tree
+		//viewerPosition { 0.0, 0.0, 0.0 };
+		//navigationRotation { 0.0, 0.0, 0.0 };
+		std::fill_n(viewerPosition, 3, 0);
+		std::fill_n(navigationRotation, 3, 0);
 		glutDisplayFunc(displayFunc);
 		glutMouseFunc(mouseCallbackFunc);
 		glutMotionFunc(mouseMotionFunc);
@@ -268,15 +275,15 @@ void mouseMotionFunc(int x, int y) {
 
 		xOffset = (mousePressedX + x);
 		if (!lastXOffset == 0.0) {
-			viewerPosition[0] -= (xOffset - lastXOffset) / 8.0;
-			viewerDirection[0] -= (xOffset - lastXOffset) / 8.0;
+			viewerPosition[0] -= (xOffset - lastXOffset) / 8.0 * SPEED;
+			viewerDirection[0] -= (xOffset - lastXOffset) / 8.0 * SPEED;
 		}
 		lastXOffset = xOffset;
 
 		yOffset = (mousePressedY + y);
 		if (!lastYOffset == 0.0) {
-			viewerPosition[1] += (yOffset - lastYOffset) / 8.0;
-			viewerDirection[1] += (yOffset - lastYOffset) / 8.0;
+			viewerPosition[1] += (yOffset - lastYOffset) / 8.0 * SPEED;
+			viewerDirection[1] += (yOffset - lastYOffset) / 8.0 * SPEED;
 		}
 		lastYOffset = yOffset;
 
@@ -294,12 +301,10 @@ void mouseMotionFunc(int x, int y) {
 
 void keyboardFunc(unsigned char key, int x, int y) {
 	switch (key) {
-#ifdef WIN32
-		// exit on escape
+	// exit on escape
 	case '\033':
 		exit(0);
 		break;
-#endif
 
 		// switch to fullscreen
 	case 'f':
