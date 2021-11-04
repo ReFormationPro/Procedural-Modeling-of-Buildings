@@ -84,6 +84,14 @@ void displayFunc2(void) {
 }
 
 void displayFunc(void) {
+
+	glPushMatrix();
+	
+	//glTranslatef(viewerPosition[0], viewerPosition[1], viewerPosition[2]);
+	glRotatef(navigationRotation[0], 1.0f, 0.0f, 0.0f);
+	glRotatef(navigationRotation[1], 0.0f, 1.0f, 0.0f);
+
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
 	glClear(GL_COLOR_BUFFER_BIT);         // Clear the color buffer (background)
 	float padding = 0.1f;
@@ -143,7 +151,10 @@ void displayFunc(void) {
 		}
 		depth++;
 	}
-	glFlush();  // Render now
+	//glFlush();  // Render now
+	glutSwapBuffers();
+
+	glPopMatrix();
 }
 
 void initGlut(int whatToDraw, int argc, char **argv) {
@@ -152,14 +163,21 @@ void initGlut(int whatToDraw, int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutInitWindowPosition(100, 100);
-	//glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	
 	nWindowID = glutCreateWindow("Procedural Modeling");
 	// Register callbacks:
-	 glEnable (GL_LINE_SMOOTH);
+	glEnable (GL_LINE_SMOOTH);
  
-	if (whatToDraw ==0) // draw 2d tree
+	if (whatToDraw ==0) {
+		// draw 2d tree
 		glutDisplayFunc(displayFunc);
-	else { //draw 3d
+		glutMouseFunc(mouseCallbackFunc);
+		glutMotionFunc(mouseMotionFunc);
+		glutKeyboardFunc(keyboardFunc);
+		glutIdleFunc(idleFunc);
+	} else {
+		//draw 3d
 		textureLoader = new Textures();
 		glutDisplayFunc(displayFunc2);
 		glutReshapeFunc(reshapeFunc);
